@@ -10,6 +10,8 @@ Asynchronous parallel functions made funky!
   * Call _parallel(callback)_ to assign a final callback and execute all the funky functions in parallel.
   * Dance!
 
+Example:
+
     var funk = require('funk')(),
         fs = require('fs');
 
