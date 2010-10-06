@@ -17,16 +17,20 @@ Example:
 
     funk.results = [];
 
-    fs.readFile("test/foo.txt", funk.add(function (er, data) {
+    fs.readFile("dance_moves/james_brown.txt", funk.add(function (er, data) {
       this.results.push(data);
     }));
 
-    fs.readFile("test/bar.txt", funk.add(function (er, data) {
+    fs.readFile("dance_moves/jackson_5.txt", funk.add(function (er, data) {
+      this.results.push(data);
+    }));
+
+    fs.readFile("dance_moves/jamiroquai.txt", funk.add(function (er, data) {
       this.results.push(data);
     }));
 
     funk.parallel(function(){
-      sys.puts(sys.inspect(this.results)); // => [foo.txt contents, bar.txt contents]
+      dance(this.results)); // free your mind and your ass will follow!
     });
 
 Grooooovy!
