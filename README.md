@@ -1,10 +1,12 @@
-# Funk
+# Funk(tions)
 
-Asynchronous parallel funktions made funky! (because working with asynchronous funktions can be a pain in the ass)
+Asynchronous parallel functions made funky!
 
-Funk provides an object to add all the funktions you want to run in parallel.
-This object can be used as well to gather all the information from the callbacks (db records, file contents, etc...).
-Once you have added all the funktions, you call _parallel(callback)_ to assign a final callback and execute them on parallel.
+Funk returns an object.
+Add all the functions you want to run in parallel to that object.
+Use this object to gather all the information from the callbacks (db records, file contents, etc...).
+Call _parallel(callback)_ to assign a final callback and execute all the funky functions on parallel.
+Dance!
 
     var funk = require('./../lib/funk')(),
         fs = require('fs');
