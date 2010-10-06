@@ -2,6 +2,8 @@
 
 Asynchronous parallel functions made funky!
 
+    npm install funk
+
 Funk returns an object.
 Add all the functions you want to run in parallel to that object.
 Use this object to gather all the information from the callbacks (db records, file contents, etc...).
