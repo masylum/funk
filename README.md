@@ -30,7 +30,7 @@ Example:
     }));
 
     funk.parallel(function(){
-      dance(this.results)); // free your mind and your ass will follow!
+      dance(this.results); // free your mind and your ass will follow!
     });
 
 Grooooovy!
