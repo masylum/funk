@@ -49,6 +49,21 @@ module.exports = {
     });
   },
 
+  'test nothing': function (assert) {
+
+    var funk = require('./../lib/funk')(),
+        fs = require('fs');
+
+    funk.results = [];
+
+    fs.readFile("test/foo.txt", 'utf-8', funk.nothing());
+    fs.readFile("test/bar.txt", 'utf-8', funk.nothing());
+
+    funk.parallel(function () {
+      assert.equal(this.results, []);
+    });
+  }
+
   'test result': function (assert) {
 
     var funk = require('./../lib/funk')(),
