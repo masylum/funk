@@ -1,4 +1,19 @@
-# Funk(tions)
+     ,dPYb,                           ,dPYb,
+     IP'`Yb                           IP'`Yb
+     I8  8I                           I8  8I
+     I8  8'                           I8  8bgg,
+     I8 dP  gg      gg   ,ggg,,ggg,   I8 dP" "8
+     I8dP   I8      8I  ,8" "8P" "8,  I8d8bggP"
+     I8P    I8,    ,8I  I8   8I   8I  I8P' "Yb,
+    ,d8b,_ ,d8b,  ,d8b,,dP   8I   Yb,,d8    `Yb,
+    PI8"8888P'"Y88P"`Y88P'   8I   `Y888P      Y8
+     I8 `8,
+     I8  `8,
+     I8   8I
+     I8   8I
+     I8, ,8'
+      "Y8P'
+
 
 Asynchronous parallel functions made funky!
 
