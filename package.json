@@ -1,10 +1,9 @@
 {
   "name": "funk",
-  "description": "Asynchronous parallel functions made funky!",
-  "version": "0.0.2",
+  "description": "Asynchronous functions made funky!",
+  "version": "1.0.0",
   "main": "./lib/funk",
   "author": "Pau Ramon <masylum@gmail.com>",
   "repository" : {"type": "git" , "url": "http://github.com/masylum/funk.git" },
   "engines": { "node": ">= 0.2.0" }
 }
-

@@ -15,37 +15,96 @@
       "Y8P'
 
 
-Asynchronous parallel functions made funky!
+Asynchronous functions made funky!
+
+## What the funk?
+
+_funk_ will not:
+
+- Make you code asynchronous as if it where synchrnous.
+- Add overhead to your application.
+- _funk_ and revolution will not be televised.
+
+_funk_ will:
+
+- Make your asynchronous code easier to code.
+- Make your code more readable.
+- _funk_ will make your sexual life more interesing. Try some James Brown when you get laid.
+
+## Instalation
 
     npm install funk
 
-  * Get a funk object.
-  * Add the functions you want to run in parallel to that object.
-  * Use this object to gather all the information from callbacks (db records, file contents, etc...).
-  * Call _parallel(callback)_ to assign a final callback and execute all the funky functions in parallel.
-  * Dance!
+## API
 
-Example:
+_funk_ usage is really simple. You don't need to learn DSLs or weird system,
+just wrap your callbacks and let the groove do the rest.
+
+- `set(name, value)`: Save results that will then be recovered o the `serial` or `parallel` callback.
+- `get(name)`: Retrieve results previously saved.
+- `add(function)`: Adds the function to funk.
+- `nothing()`: Adds the function to funk without setting any result.
+- `result(name, value)`: Adds the function to funk and sets the value.
+- `parallel(callback)`: Will run all the added functions in parallel and call _callback_ when all are done. `this` holds all the results setted with `set`.
+- `serial(callback)`: Will run all the added functions in serial and call _callback_ when all are done. `this` holds all the results setted with `set`.
+
+## Parallel example
+
+Funk is really useful when you need to do something after a bunch of asynchronous callbacks are called.
 
     var funk = require('funk')(),
+        assert = require('assert'),
         fs = require('fs');
 
-    funk.results = [];
+    funk.set('results', []);
 
     fs.readFile("dance_moves/james_brown.txt", funk.add(function (er, data) {
-      this.results.push(data);
+      this.moves.push(data);
     }));
 
     fs.readFile("dance_moves/jackson_5.txt", funk.add(function (er, data) {
-      this.results.push(data);
+      this.moves.push(data);
     }));
 
-    fs.readFile("dance_moves/jamiroquai.txt", funk.add(function (er, data) {
-      this.results.push(data);
-    }));
+    setTimeout(funk.result('foo', 'bar'), 200);
 
     funk.parallel(function(){
-      dance(this.results); // free your mind and your ass will follow!
+      assert.equals(this.moves.length, 2);
+      assert.equals(this.foo, 'bar');
+      assert.equals(funk.get('foo'), 'bar');
+      console.log('This is funktastic!');
     });
 
-Grooooovy!
+## Serial example
+
+Dealing with nested callbacks can sometimes be a PITA. _funk_ will ease the pain.
+
+    var funk = require('funk')(),
+        assert = require('assert'),
+        order = 0;
+
+    setTimeout(funk.add(function () {
+      order++;
+      funk.set('order_first', order);
+    }), 200);
+
+    setTimeout(funk.add(function () {
+      order++;
+      this.order_second = order;
+    }), 5);
+
+    funk.serial(function(){
+      assert.equals(this.order_first, 1);
+      assert.equals(this.order_second, 2);
+      console.log('Funkinbelievable!');
+    });
+
+## Tests
+
+_funk_ is fully tested using [testosterone](https://github.com/masylum/testosterone).
+
+    npm install testosterone
+
+In order to run the tests type:
+
+    make
