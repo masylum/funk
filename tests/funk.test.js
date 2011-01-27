@@ -111,12 +111,12 @@ var testosterone = require('testosterone')(),
     funk.set('order_first', order);
   }), 200);
 
-  fs.readFile("test/foo.txt", 'utf-8', funk.add(function () {
+  fs.readFile(__dirname + "/data/foo.txt", 'utf-8', funk.add(function () {
     order += 1;
     funk.set('order_foo', order);
   }));
 
-  fs.readFile("test/bar.txt", 'utf-8', funk.add(function () {
+  fs.readFile(__dirname + "/data/bar.txt", 'utf-8', funk.add(function () {
     order += 1;
     funk.set('order_bar', order);
   }));
