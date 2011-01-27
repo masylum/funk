@@ -1,7 +1,7 @@
 {
   "name": "funk",
   "description": "Asynchronous functions made funky!",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./lib/funk",
   "author": "Pau Ramon <masylum@gmail.com>",
   "repository" : {"type": "git" , "url": "http://github.com/masylum/funk.git" },

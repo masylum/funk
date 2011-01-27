@@ -88,6 +88,8 @@ Dealing with nested callbacks can sometimes be a PITA. _funk_ will ease the pain
       funk.set('order_first', order);
     }), 200);
 
+    setTimeout(funk.nothing(), 100);
+
     setTimeout(funk.add(function () {
       order++;
       this.order_second = order;
