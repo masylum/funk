@@ -19,94 +19,156 @@ Asynchronous functions made funky!
 
 ## What the funk?
 
-_funk_ will not:
-
-- Make you code asynchronous as if it where synchrnous.
-- Add overhead to your application.
-- _funk_ and revolution will not be televised.
-
-_funk_ will:
-
-- Make your asynchronous code easier to code.
-- Make your code more readable.
-- _funk_ will make your sexual life more interesing. Try some James Brown when you get laid.
+Funk is a little module that helps you with the `serial` and `parallel` asynchronous pattern.
 
 ## Instalation
 
-    npm install funk
+``` bash
+npm install funk
+```
 
 ## API
 
-_funk_ usage is really simple. You don't need to learn DSLs or weird system,
+**funk** usage is really simple. You don't need to learn any DSL or weird hacks,
 just wrap your callbacks and let the groove do the rest.
 
-- `set(name, value)`: Save results that will then be recovered o the `serial` or `parallel` callback.
-- `get(name)`: Retrieve results previously saved.
-- `add(function)`: Adds the function to funk.
-- `nothing()`: Adds the function to funk without setting any result.
-- `result(name, value)`: Adds the function to funk and sets the value.
-- `parallel(callback)`: Will run all the added functions in parallel and call _callback_ when all are done. `this` holds all the results setted with `set`.
-- `serial(callback)`: Will run all the added functions in serial and call _callback_ when all are done. `this` holds all the results setted with `set`.
+### Constructor (pattern) -> Funk
 
-## Parallel example
+Accepts a string that can be either `parallel` or `serial`, depending on the pattern you want to implement.
 
-Funk is really useful when you need to do something after a bunch of asynchronous callbacks are called.
+``` javascript
+var funk = require('funk')('serial');
+```
 
-    var funk = require('funk')(),
-        assert = require('assert'),
-        fs = require('fs');
+### set (name, value) -> undefined
 
-    funk.set('results', []);
+Save results that will then be recovered on the `run` callback.
 
-    fs.readFile("dance_moves/james_brown.txt", funk.add(function (er, data) {
-      this.moves.push(data);
-    }));
+``` javascript
+var funk = require('funk')('serial');
 
-    fs.readFile("dance_moves/jackson_5.txt", funk.add(function (er, data) {
-      this.moves.push(data);
-    }));
+setTimeout(funk.add(function () {
+  funk.set('foo', 'bar');
+}, 100);
 
-    setTimeout(funk.result('foo', 'bar'), 200);
+funk.run(function () {
+  assert.equals(this.foo, 'bar');
+});
+```
 
-    funk.parallel(function(){
-      assert.equals(this.moves.length, 2);
-      assert.equals(this.foo, 'bar');
-      assert.equals(funk.get('foo'), 'bar');
-      console.log('This is funktastic!');
-    });
+### get (name) -> *
 
-## Serial example
+Retrieve results previously saved.
 
-Dealing with nested callbacks can sometimes be a PITA. _funk_ will ease the pain.
+``` javascript
+var funk = require('funk')('serial');
 
-    var funk = require('funk')(),
-        assert = require('assert'),
-        order = 0;
+setTimeout(funk.add(function () {
+  funk.set('foo', 'bar');
+}, 100);
 
-    setTimeout(funk.add(function () {
-      order++;
-      funk.set('order_first', order);
-    }), 200);
+funk.run(function () {
+  assert.equals(funk.get('foo'), 'bar');
+});
+```
 
-    setTimeout(funk.nothing(), 100);
+### add (function) -> Function
 
-    setTimeout(funk.add(function () {
-      order++;
-      this.order_second = order;
-    }), 5);
+Adds a callback to be executed either in `parallel` or `serial`.
 
-    funk.serial(function(){
-      assert.equals(this.order_first, 1);
-      assert.equals(this.order_second, 2);
-      console.log('Funkinbelievable!');
-    });
+``` javascript
+var funk = require('funk')('parallel');
+
+setTimeout(funk.add(function () {
+  funk.set('foo', 'bar');
+}, 200);
+
+setTimeout(funk.add(function () {
+  funk.set('bar', 'foo');
+}, 100);
+
+funk.run(function () {
+  assert.equals(funk.get('foo'), 'bar');
+  assert.equals(funk.get('bar'), 'foo');
+});
+```
+
+### nothing () -> Function
+
+Adds the callback to funk and does nothing with the result
+
+``` javascript
+var funk = require('funk')('parallel');
+
+setTimeout(funk.nothing());
+setTimeout(funk.nothing());
+
+funk.run(function () {
+  // both setTimeout are called
+});
+```
+
+### result (name, value) -> Function
+
+Adds the callback to funk and sets the value.
+
+``` javascript
+var funk = require('funk')('parallel');
+
+fs.readFile("./foo.txt", 'utf-8', funk.result('file1'));
+fs.readFile("./bar.txt", 'utf-8', funk.result('file2'));
+
+funk.run(function () {
+  assert.equal(this.file1, 'foo\n');
+  assert.equal(this.file2, 'bar\n');
+});
+```
+
+### result (callback, onError) -> undefined
+
+Will run all the added functions in `serial` or `parallel` and call _callback_ when all are done.
+`this` holds all the results setted with `set` and the `errors`.
+
+If a `onError` callback is implemented it will be called only on getting the first error, ignorign the following requests.
+
+``` javascript
+// serial example without declaring `onError` callback
+var funk = require('./../')('serial'),
+    order = 0;
+
+funk.name = 'fleiba';
+funk.results = [];
+
+setTimeout(funk.add(function () {
+  order += 1;
+  funk.set('order_first', order);
+}), 200);
+
+fs.readFile(__dirname + "/data/doo.txt", 'utf-8', funk.add(function () {
+  order += 1;
+  funk.set('order_foo', order);
+}));
+
+fs.readFile(__dirname + "/data/gar.txt", 'utf-8', funk.add(function () {
+  order += 1;
+  funk.set('order_bar', order);
+}));
+
+funk.run(function () {
+  assert.equal(this.order_first, 1);
+  assert.equal(this.order_foo, 2);
+  assert.equal(this.order_bar, 3);
+  assert.equal(this.errors.length, 2); // none of the 2 files exists
+  done();
+});
+```
 
 ## Tests
 
 _funk_ is fully tested using [testosterone](https://github.com/masylum/testosterone).
 
-    npm install testosterone
-
 In order to run the tests type:
 
-    make
+``` bash
+make
+```

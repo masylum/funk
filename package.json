@@ -1,9 +1,12 @@
 {
   "name": "funk",
   "description": "Asynchronous functions made funky!",
-  "version": "1.0.1",
+  "version": "1.5.0",
   "main": "./lib/funk",
   "author": "Pau Ramon <masylum@gmail.com>",
   "repository" : {"type": "git" , "url": "http://github.com/masylum/funk.git" },
-  "engines": { "node": ">= 0.2.0" }
+  "devDependencies": {
+    "testosterone": "1.2.0"
+  },
+  "engines": { "node": ">= 0.4.0" }
 }
